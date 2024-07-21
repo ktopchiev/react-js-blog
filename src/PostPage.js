@@ -20,7 +20,7 @@ const PostPage = ({ posts, handleDelete }) => {
                 {!post &&
                     <>
                         <h2>Post Not Found</h2>
-                        <p>Well, that's disappointings.</p>
+                        <p>Well, that's disappointing.</p>
                         <p>
                             <Link to='/'>Visit Our Homepage</Link>
                         </p>

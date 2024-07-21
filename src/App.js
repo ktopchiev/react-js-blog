@@ -6,7 +6,8 @@ import PostPage from "./PostPage";
 import NewPost from "./NewPost";
 import About from "./About";
 import Missing from "./Missing";
-import { Routes, Route, useHistory } from "react-router-dom";
+//In ReactRouter useHistory is replaced by useNavigate
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -40,10 +41,16 @@ function App() {
 
     const [search, setSearch] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-
+    
+    // In ReactRouter v6 useHistory is replaced by useNavigate
+    // const history = useHistory();
+    const navigate = useNavigate();
+    
     const handleDelete = (id) => {
         const postsList = posts.filter((post) => post.id !== id);
         setPosts(postsList);
+        // history.push('/');
+        navigate("/");
     }
 
     return (
