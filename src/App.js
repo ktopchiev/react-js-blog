@@ -17,9 +17,10 @@ function App() {
       {/* There's a difference between version 5 and 6 in react router*/}
       <Routes>
         <Route index element={<Home />} />
+        <Route path="home" element={<Home />} />
         <Route path="about" element={<About />} />
-        <Route path="postpage" element={<PostPage />} />
-        <Route path="newpost" element={<NewPost />} />
+        <Route path="post/:id" element={<PostPage />} />
+        <Route path="post" element={<NewPost />} />
         <Route path="*" element={<Missing />} />
       </Routes>
       <Footer />
