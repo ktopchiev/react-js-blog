@@ -50,6 +50,14 @@ function App() {
     // const history = useHistory();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const filteredResults = posts.filter(post => 
+            ((post.body).toLowerCase()).includes(search.toLowerCase())
+            || ((post.title).toLowerCase()).includes(search.toLowerCase()));
+
+            setSearchResult(filteredResults.reverse());
+    },[posts, search])
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
@@ -75,7 +83,7 @@ function App() {
             <Nav search={search} setSearch={setSearch} />
             {/* There's a difference between version 5 and 6 in react router*/}
             <Routes>
-                <Route index element={<Home posts={posts} />} />
+                <Route index element={<Home posts={searchResult} />} />
                 <Route path="home" element={<Home />} />
                 <Route path="about" element={<About />} />
                 <Route path="post/:id" element={<PostPage posts={posts} handleDelete={handleDelete} />} />
