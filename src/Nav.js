@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Nav = ({ search, setSearch }) => {
     return (
         <nav className='Nav'>
-            <from className="searchForm" onSubmit={(e) => e.preventDefault()}>
+            <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
                 <label htmlFor="search">Search posts</label>
                 <input
                     id="search"
@@ -13,7 +13,7 @@ const Nav = ({ search, setSearch }) => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-            </from>
+            </form>
             <ul>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/post">Post</Link></li>

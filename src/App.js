@@ -10,6 +10,7 @@ import Missing from "./Missing";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { format } from 'date-fns';
+import api from "./api/posts";
 
 
 function App() {
@@ -25,12 +26,30 @@ function App() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const filteredResults = posts.filter(post => 
+        const fetchPosts = async () => {
+            try {
+                const response = await api.get('/posts');
+                setPosts(response.data);
+            } catch (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else {
+                    console.log(`Error: ${error.message}`);
+                }
+            }
+        }
+        fetchPosts();
+    }, [])
+
+    useEffect(() => {
+        const filteredResults = posts.filter(post =>
             ((post.body).toLowerCase()).includes(search.toLowerCase())
             || ((post.title).toLowerCase()).includes(search.toLowerCase()));
 
-            setSearchResult(filteredResults.reverse());
-    },[posts, search])
+        setSearchResult(filteredResults.reverse());
+    }, [posts, search])
 
     const handleSubmit = (e) => {
         e.preventDefault();
