@@ -74,11 +74,23 @@ function App() {
         }
     }
 
-    const handleDelete = (id) => {
-        const postsList = posts.filter((post) => post.id !== id);
-        setPosts(postsList);
-        // history.push('/');
-        navigate("/");
+    const handleDelete = async (id) => {
+        try {
+            await api.delete(`/posts/${id}`);
+            const postsList = posts.filter((post) => post.id !== id);
+            setPosts(postsList);
+            setPostTitle('');
+            setPostBody('');
+            navigate("/");
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else {
+                console.log(`Error: ${error.message}`);
+            }
+        }
     }
 
     return (
