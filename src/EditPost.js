@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const EditPost = ({ posts, editTitle, setEditTitle, editBody, setEditBody, handleEdit }) => {
@@ -51,6 +51,15 @@ const EditPost = ({ posts, editTitle, setEditTitle, editBody, setEditBody, handl
                     ></textarea>
                     <button type="submit" onClick={() => handleEdit(post.id)}>Edit Post</button>
                 </form>
+            }
+            {!editTitle &&
+                <>
+                <h2>Post Not Found</h2>
+                <p>Well, that's disappointing.</p>
+                <p>
+                    <Link to='/'>Visit Our Homepage</Link>
+                </p>
+                </>
             }
         </main>
     )

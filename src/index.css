@@ -205,7 +205,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.PostPage button {
+button.deleteBtn {
   height: 48px;
   min-width: 48px;
   border-radius: 0.25rem;
@@ -214,6 +214,18 @@ body {
   background-color: red;
   color: #fff;
   cursor: pointer;
+}
+
+button.editBtn {
+  height: 48px;
+  min-width: 48px;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: rgb(65, 64, 64);
+  color: #fff;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
 
 .statusMsg {
