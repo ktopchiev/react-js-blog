@@ -4,6 +4,7 @@ import Home from "./Home";
 import Footer from "./Footer";
 import PostPage from "./PostPage";
 import NewPost from "./NewPost";
+import EditPost from "./EditPost";
 import About from "./About";
 import Missing from "./Missing";
 //In ReactRouter useHistory is replaced by useNavigate
@@ -20,11 +21,14 @@ function App() {
     const [searchResult, setSearchResult] = useState([]);
     const [postTitle, setPostTitle] = useState('');
     const [postBody, setPostBody] = useState('');
+    const [editTitle, setEditTitle] = useState('');
+    const [editBody, setEditBody] = useState('');
 
     // In ReactRouter v6 useHistory is replaced by useNavigate
     // const history = useHistory();
     const navigate = useNavigate();
 
+    //Fetch data on reload
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -43,6 +47,7 @@ function App() {
         fetchPosts();
     }, [])
 
+    //Filter posts in the feed to match search
     useEffect(() => {
         const filteredResults = posts.filter(post =>
             ((post.body).toLowerCase()).includes(search.toLowerCase())
@@ -51,6 +56,7 @@ function App() {
         setSearchResult(filteredResults.reverse());
     }, [posts, search])
 
+    //Handles the submit operation in the new post form
     const handleSubmit = async (e) => {
         e.preventDefault();
         const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
@@ -93,30 +99,56 @@ function App() {
         }
     }
 
-    return (
-        <div className="App">
-            <Header title={"React JS Blog"} />
-            <Nav search={search} setSearch={setSearch} />
-            {/* There's a difference between version 5 and 6 in react router*/}
-            <Routes>
-                <Route index element={<Home posts={searchResult} />} />
-                <Route path="home" element={<Home />} />
-                <Route path="about" element={<About />} />
-                <Route path="post/:id" element={<PostPage posts={posts} handleDelete={handleDelete} />} />
-                <Route
-                    path="post"
-                    element={<NewPost
-                        postTitle={postTitle}
-                        setPostTitle={setPostTitle}
-                        postBody={postBody}
-                        setPostBody={setPostBody}
-                        handleSubmit={handleSubmit}
-                    />}
-                />
-                <Route path="*" element={<Missing />} />
-            </Routes>
-            <Footer />
-        </div>
-    );
+    const handleEdit = async (id) => {
+        const datetime = format(new Date(), "MMMM dd, yyyy pp");
+        const editPost = { id, title: editTitle, datetime, body: editBody };
+        try {
+            const response = await api.put(`/posts/${id}`, editPost);
+            setPosts(posts.map(post => post.id === id ? { ...response.data } : post));
+            setEditTitle('');
+            setEditBody('');
+            navigate(`/post/${id}`);
+        } catch (error) {
+            console.log(`Error: ${error.message}`);
+        }
+    }
+
+
+return (
+    <div className="App">
+        <Header title={"React JS Blog"} />
+        <Nav search={search} setSearch={setSearch} />
+        {/* There's a difference between version 5 and 6 in react router*/}
+        <Routes>
+            <Route index element={<Home posts={searchResult} />} />
+            <Route path="home" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="post/:id" element={<PostPage posts={posts} handleDelete={handleDelete} />} />
+            <Route
+                path="post"
+                element={<NewPost
+                    postTitle={postTitle}
+                    setPostTitle={setPostTitle}
+                    postBody={postBody}
+                    setPostBody={setPostBody}
+                    handleSubmit={handleSubmit}
+                />}
+            />
+            <Route
+                path="edit/:id"
+                element={<EditPost
+                    posts={posts}
+                    editTitle={editTitle}
+                    setEditTitle={setEditTitle}
+                    editBody={editBody}
+                    setEditBody={setEditBody}
+                    handleEdit={handleEdit}
+                />}
+            />
+            <Route path="*" element={<Missing />} />
+        </Routes>
+        <Footer />
+    </div>
+);
 }
 export default App;
