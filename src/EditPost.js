@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 const EditPost = ({ posts, editTitle, setEditTitle, editBody, setEditBody, handleEdit }) => {
     const { id } = useParams();
     const post = posts.find((post) => (post.id).toString() === id);
-    console.log(post);
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -30,27 +29,29 @@ const EditPost = ({ posts, editTitle, setEditTitle, editBody, setEditBody, handl
 
     return (
         <main className='NewPost'>
-            <form className="newPostForm" onSubmit={(e) => e.preventDefault()}>
-                <label htmlFor="postTitle">Title:</label>
-                <input
-                    id="postTitle"
-                    type='text'
-                    placeholder='Post Title'
-                    required
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                />
-                <label htmlFor="postBody">Post:</label>
-                <textarea
-                    className="postBody"
-                    id="postBody"
-                    placeholder="Post Body"
-                    required
-                    value={editBody}
-                    onChange={(e) => setEditBody(e.target.value)}
-                ></textarea>
-                <button type="submit" onClick={() => handleEdit(post.id)}>Edit Post</button>
-            </form>
+            {editTitle &&
+                <form className="newPostForm" onSubmit={(e) => e.preventDefault()}>
+                    <label htmlFor="postTitle">Title:</label>
+                    <input
+                        id="postTitle"
+                        type='text'
+                        placeholder='Post Title'
+                        required
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                    />
+                    <label htmlFor="postBody">Post:</label>
+                    <textarea
+                        className="postBody"
+                        id="postBody"
+                        placeholder="Post Body"
+                        required
+                        value={editBody}
+                        onChange={(e) => setEditBody(e.target.value)}
+                    ></textarea>
+                    <button type="submit" onClick={() => handleEdit(post.id)}>Edit Post</button>
+                </form>
+            }
         </main>
     )
 }
