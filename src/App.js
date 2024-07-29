@@ -12,6 +12,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { format } from 'date-fns';
 import api from "./api/posts";
+import useWindowSize from "./hooks/useWindowSize";
 
 
 function App() {
@@ -23,10 +24,10 @@ function App() {
     const [postBody, setPostBody] = useState('');
     const [editTitle, setEditTitle] = useState('');
     const [editBody, setEditBody] = useState('');
-
     // In ReactRouter v6 useHistory is replaced by useNavigate
     // const history = useHistory();
     const navigate = useNavigate();
+    const { width } = useWindowSize();
 
     //Fetch data on reload
     useEffect(() => {
@@ -114,41 +115,41 @@ function App() {
     }
 
 
-return (
-    <div className="App">
-        <Header title={"React JS Blog"} />
-        <Nav search={search} setSearch={setSearch} />
-        {/* There's a difference between version 5 and 6 in react router*/}
-        <Routes>
-            <Route index element={<Home posts={searchResult} />} />
-            <Route path="home" element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="post/:id" element={<PostPage posts={posts} handleDelete={handleDelete} />} />
-            <Route
-                path="post"
-                element={<NewPost
-                    postTitle={postTitle}
-                    setPostTitle={setPostTitle}
-                    postBody={postBody}
-                    setPostBody={setPostBody}
-                    handleSubmit={handleSubmit}
-                />}
-            />
-            <Route
-                path="edit/:id"
-                element={<EditPost
-                    posts={posts}
-                    editTitle={editTitle}
-                    setEditTitle={setEditTitle}
-                    editBody={editBody}
-                    setEditBody={setEditBody}
-                    handleEdit={handleEdit}
-                />}
-            />
-            <Route path="*" element={<Missing />} />
-        </Routes>
-        <Footer />
-    </div>
-);
+    return (
+        <div className="App">
+            <Header title={"React JS Blog"} width={width} />
+            <Nav search={search} setSearch={setSearch} />
+            {/* There's a difference between version 5 and 6 in react router*/}
+            <Routes>
+                <Route index element={<Home posts={searchResult} />} />
+                <Route path="home" element={<Home />} />
+                <Route path="about" element={<About />} />
+                <Route path="post/:id" element={<PostPage posts={posts} handleDelete={handleDelete} />} />
+                <Route
+                    path="post"
+                    element={<NewPost
+                        postTitle={postTitle}
+                        setPostTitle={setPostTitle}
+                        postBody={postBody}
+                        setPostBody={setPostBody}
+                        handleSubmit={handleSubmit}
+                    />}
+                />
+                <Route
+                    path="edit/:id"
+                    element={<EditPost
+                        posts={posts}
+                        editTitle={editTitle}
+                        setEditTitle={setEditTitle}
+                        editBody={editBody}
+                        setEditBody={setEditBody}
+                        handleEdit={handleEdit}
+                    />}
+                />
+                <Route path="*" element={<Missing />} />
+            </Routes>
+            <Footer />
+        </div>
+    );
 }
 export default App;
